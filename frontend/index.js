@@ -4,7 +4,16 @@ function moduleProject3() {
 
   function buildNav(links) {
     //  ✨ do your magic here
-    return document.createElement('nav')
+    let navBar = document.createElement('nav');
+    links.forEach(link => {
+      let a = document.createElement('a')
+      a.textContent = link.textContent;
+      a.href = link.href;
+      a.title = link.title
+      navBar.appendChild(a)
+    })
+
+    return navBar
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -20,6 +29,35 @@ function moduleProject3() {
 
   function buildLearnerCard(learner, languages) {
     //  ✨ do your magic here
+    let newCard = document.createElement('div');
+    newCard.classList.add('learner-card');
+    let p1 = document.createElement('p');
+    let p2 = document.createElement('p');
+    let p3 = document.createElement('p');
+    let p4 = document.createElement('p');
+
+    p1.textContent = learner.fullName;
+    p2.textContent = `Learner ID: ${learner.id}`;
+    p3.textContent = `Date of Birth: ${learner.dateOfBirth}`;
+    p4.textContent = `Favorite Language: ${learner.favLanguage}`;
+
+    newCard.appendChild(p1)
+    newCard.appendChild(p2)
+    newCard.appendChild(p3)
+    newCard.appendChild(p4)
+
+    newCard.addEventListener('click', (e) => {
+      e.stopPropagation()
+      let previousTarget = document.querySelector('.active');
+      if(previousTarget) {
+        previousTarget.classList.remove('active');
+        newCard.classList.add('active')
+      } else {
+        newCard.classList.add('active')
+      }
+    })
+
+    return newCard
   }
 
   {
@@ -40,13 +78,58 @@ function moduleProject3() {
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
     //  ✨ do your magic here
+    let section = document.querySelector('section')
+    learners.forEach(learner => {
+      let newCard = buildLearnerCard(learner, languages);
+      section.appendChild(newCard);
+    })
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
     //  ✨ do your magic here
-    return document.createElement('footer')
+    console.log(footerData)
+    let newFooter = document.createElement('footer');
+      let companyInfo = document.createElement('div');
+      companyInfo.classList.add('company-info')
+      newFooter.appendChild(companyInfo)
+        Object.keys(footerData).forEach((val) => {
+          let pTag = document.createElement('p');
+          if(val !== 'socialMedia') {
+            pTag.textContent = footerData[val];
+            pTag.classList.add(val)
+            companyInfo.appendChild(pTag)
+          }
+          if(val === 'contactEmail') {
+            let aTag = document.createElement('a');
+            aTag.href = `mailto:${footerData[val]}`
+            aTag.textContent = `${footerData[val]}`
+            pTag.textContent = `Email: `
+            pTag.appendChild(aTag)
+          }
+        })
+        
+      // console.log(footerData)
+
+      let socialMedia = document.createElement('div')
+      socialMedia.classList.add('social-media')
+      newFooter.appendChild(socialMedia)
+        Object.keys(footerData.socialMedia).forEach((prop) => {
+        let aTag = document.createElement('a');
+        aTag.href = footerData.socialMedia[prop];
+        let upperProp = prop.charAt(0).toUpperCase() + prop.slice(1);
+        aTag.textContent = upperProp;
+        
+        socialMedia.appendChild(aTag)
+        })
+
+      let bloomDiv = document.createElement('div');
+      bloomDiv.textContent = `© ${footerData.companyName.toUpperCase()} 2024`
+      newFooter.appendChild(bloomDiv)
+      
+
+    return newFooter
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
@@ -64,6 +147,12 @@ function moduleProject3() {
   // 👉 TASK 4 - Clicking on the section should deactivate the active card
 
   //  ✨ do your magic here
+  let section = document.querySelector('section')
+  section.addEventListener('click', () => {
+    let findCard = document.querySelector('.active');
+    findCard && findCard.classList.remove('active')
+  })
+
 }
 
 // ❗ DO NOT CHANGE THIS CODE
